@@ -7,7 +7,11 @@
     "dev": "tsx watch src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js",
-    "typecheck": "tsc"
+    "typecheck": "tsc --noEmit",
+    "db:migrate": "node --import tsx ./node_modules/knex/bin/cli.js --knexfile knexfile.ts migrate:latest",
+    "db:migrate:make": "node --import tsx ./node_modules/knex/bin/cli.js --knexfile knexfile.ts migrate:make",
+    "db:rollback": "node --import tsx ./node_modules/knex/bin/cli.js --knexfile knexfile.ts migrate:rollback",
+    "db:status": "node --import tsx ./node_modules/knex/bin/cli.js --knexfile knexfile.ts migrate:list"
   },
   "keywords": [],
   "author": "",

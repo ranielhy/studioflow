@@ -7,6 +7,7 @@ COPY package*.json ./
 RUN npm ci
 
 COPY tsconfig.json ./
+COPY knexfile.ts ./
 COPY src ./src
 
 EXPOSE 3333
