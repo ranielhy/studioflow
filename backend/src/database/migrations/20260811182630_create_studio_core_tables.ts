@@ -53,8 +53,6 @@ await knex.schema.createTable("components", (table) => {
 
   table.string("name", 150).notNullable();
 
-  table.string("block_type", 30).notNullable();
-
   table.decimal("x", 12, 3).notNullable().defaultTo(0);
 
   table.decimal("y", 12, 3).notNullable().defaultTo(0);
@@ -111,4 +109,3 @@ export async function down(knex: Knex): Promise<void> {
 
   await knex.schema.dropTableIfExists("templates");
 }
-

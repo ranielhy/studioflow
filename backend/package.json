@@ -8,10 +8,14 @@
     "build": "tsc",
     "start": "node dist/server.js",
     "typecheck": "tsc --noEmit",
-    "db:migrate": "node --import tsx ./node_modules/knex/bin/cli.js --knexfile knexfile.ts migrate:latest",
-    "db:migrate:make": "node --import tsx ./node_modules/knex/bin/cli.js --knexfile knexfile.ts migrate:make",
-    "db:rollback": "node --import tsx ./node_modules/knex/bin/cli.js --knexfile knexfile.ts migrate:rollback",
-    "db:status": "node --import tsx ./node_modules/knex/bin/cli.js --knexfile knexfile.ts migrate:list"
+    "db:migrate": "knex --knexfile knexfile.ts migrate:latest",
+    "db:migrate:make": "knex --knexfile knexfile.ts migrate:make",
+    "db:rollback": "knex --knexfile knexfile.ts migrate:rollback",
+    "db:status": "knex --knexfile knexfile.ts migrate:list",
+    "db:seed": "knex --knexfile knexfile.ts seed:run",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
   },
   "keywords": [],
   "author": "",
@@ -27,8 +31,14 @@
   "devDependencies": {
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
+    "@types/jest": "^30.0.0",
     "@types/node": "^26.1.1",
+    "@types/supertest": "^7.2.1",
+    "jest": "^30.4.2",
+    "supertest": "^7.2.2",
+    "ts-jest": "^29.4.12",
+    "ts-node": "^10.9.2",
     "tsx": "^4.23.1",
-    "typescript": "^7.0.2"
+    "typescript": "^6.0.3"
   }
 }
