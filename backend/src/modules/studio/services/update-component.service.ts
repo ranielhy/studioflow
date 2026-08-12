@@ -12,6 +12,7 @@ import {
 } from "../repositories/component.repository.js";
 import { findSliceById } from "../repositories/slice.repository.js";
 import type { UpdateComponentRequest } from "../validators/update-component.validator.js";
+import { createBlockSchema } from "../validators/create-block.validator.js";
 
 export interface UpdateComponentServiceResult {
   component: ComponentRow;
@@ -37,6 +38,13 @@ export async function updateComponentService(
       "component_block_missing",
     );
   }
+
+  const validatedBlock = input.block
+    ? createBlockSchema.parse({
+        type: block.type,
+        properties: input.block.properties,
+      })
+    : null;
 
   const startTime = input.startTime ?? Number(component.start_time);
   const endTime = input.endTime !== undefined
@@ -88,12 +96,11 @@ export async function updateComponentService(
       throw new AppError("Component not found", 404, "component_not_found");
     }
 
-    const updatedBlock = input.block
+    const updatedBlock = validatedBlock
       ? await updateBlock(
           block.id,
           {
-            type: input.block.type,
-            properties: input.block.properties,
+            properties: validatedBlock.properties,
           },
           trx,
         )

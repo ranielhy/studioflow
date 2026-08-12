@@ -4,10 +4,15 @@ import { createSliceController } from "../controllers/create-slice.controller.js
 import { getSliceController } from "../controllers/get-slice.controller.js";
 import { listSlicesController } from "../controllers/list-slices.controller.js";
 
+import { blockRoutes } from "./block.routes.js";
+
+import {
+  componentRoutes,
+  sliceComponentRoutes,
+} from "./component.routes.js";
+
 import { sliceRoutes } from "./slice.routes.js";
 import { templateRoutes } from "./template.routes.js";
-import { componentRoutes } from "./component.routes.js";
-import { blockRoutes } from "./block.routes.js";
 
 export const studioRoutes = Router();
 
@@ -34,6 +39,11 @@ studioRoutes.get(
 studioRoutes.use(
   "/slices",
   sliceRoutes,
+);
+
+studioRoutes.use(
+  "/slices/:sliceId/components",
+  sliceComponentRoutes,
 );
 
 studioRoutes.use(
