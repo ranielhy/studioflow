@@ -1,13 +1,9 @@
-import type {
-  NextFunction,
-  Request,
-  Response,
-} from "express";
+import type { NextFunction, Request, Response } from "express";
 
-import { findComponentById } from "../repositories/component.repository.js";
-import { findBlockByComponent } from "../repositories/block.repository.js";
+import { updateComponentService } from "../services/update-component.service.js";
+import { updateComponentSchema } from "../validators/update-component.validator.js";
 
-export async function getComponentController(
+export async function updateComponentController(
   request: Request,
   response: Response,
   next: NextFunction,
@@ -22,23 +18,8 @@ export async function getComponentController(
       });
     }
 
-    const component = await findComponentById(id);
-
-    if (!component) {
-      return response.status(404).json({
-        error: "component_not_found",
-        message: "Component not found",
-      });
-    }
-
-    const block = await findBlockByComponent(id);
-
-    if (!block) {
-      return response.status(409).json({
-        error: "component_block_missing",
-        message: "Component does not have a block",
-      });
-    }
+    const input = updateComponentSchema.parse(request.body);
+    const { component, block } = await updateComponentService(id, input);
 
     return response.status(200).json({
       data: {

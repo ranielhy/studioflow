@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { createBlockSchema } from "./create-block.validator.js";
 
 export const updateComponentSchema = z
   .object({
@@ -43,6 +44,7 @@ export const updateComponentSchema = z
     visible: z.boolean().optional(),
     locked: z.boolean().optional(),
     editable: z.boolean().optional(),
+    block: createBlockSchema.optional(),
   })
   .refine((data) => Object.keys(data).length > 0, {
     message: "At least one field must be provided",

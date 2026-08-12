@@ -26,7 +26,7 @@ export async function createComponentController(
       request.body,
     );
 
-    const component = await createComponentService({
+    const { component, block } = await createComponentService({
       sliceId,
       ...input,
     });
@@ -59,6 +59,12 @@ export async function createComponentController(
         visible: component.visible,
         locked: component.locked,
         editable: component.editable,
+
+        block: {
+          id: block.id,
+          type: block.type,
+          properties: block.properties,
+        },
 
         createdAt: component.created_at,
         updatedAt: component.updated_at,

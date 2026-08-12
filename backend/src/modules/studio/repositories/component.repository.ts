@@ -1,4 +1,5 @@
 import { database } from "../../../database/connection.js";
+import type { Knex } from "knex";
 
 export interface ComponentRow {
   id: number;
@@ -54,8 +55,9 @@ export interface CreateComponentRepositoryInput {
 
 export async function createComponent(
   input: CreateComponentRepositoryInput,
+  db: Knex | Knex.Transaction = database,
 ): Promise<ComponentRow> {
-  const [component] = await database<ComponentRow>("components")
+  const [component] = await db<ComponentRow>("components")
     .insert({
       slice_id: input.sliceId,
 
@@ -133,6 +135,7 @@ export interface UpdateComponentRepositoryInput {
 export async function updateComponent(
   id: number,
   input: UpdateComponentRepositoryInput,
+  db: Knex | Knex.Transaction = database,
 ): Promise<ComponentRow | null> {
   const values: Partial<ComponentRow> = {};
 
@@ -188,7 +191,7 @@ export async function updateComponent(
     values.editable = input.editable;
   }
 
-  const [component] = await database<ComponentRow>("components")
+  const [component] = await db<ComponentRow>("components")
     .where({ id })
     .update({
       ...values,

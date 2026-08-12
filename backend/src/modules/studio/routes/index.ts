@@ -6,6 +6,8 @@ import { listSlicesController } from "../controllers/list-slices.controller.js";
 
 import { sliceRoutes } from "./slice.routes.js";
 import { templateRoutes } from "./template.routes.js";
+import { componentRoutes } from "./component.routes.js";
+import { blockRoutes } from "./block.routes.js";
 
 export const studioRoutes = Router();
 
@@ -32,4 +34,14 @@ studioRoutes.get(
 studioRoutes.use(
   "/slices",
   sliceRoutes,
+);
+
+studioRoutes.use(
+  "/components",
+  componentRoutes,
+);
+
+studioRoutes.use(
+  "/blocks",
+  blockRoutes,
 );

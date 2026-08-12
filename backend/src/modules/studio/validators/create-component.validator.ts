@@ -1,62 +1,124 @@
 import { z } from "zod";
 
-export const createComponentSchema = z.object({
-  name: z
-    .string()
-    .trim()
-    .min(1, "Component name is required")
-    .max(150),
+const textBlockSchema = z.object({
+  type: z.literal("TEXT"),
 
-  position: z.object({
-    x: z.number(),
-    y: z.number(),
-  }),
+  properties: z.object({
+    text: z.string(),
 
-  size: z.object({
-    width: z
+    fontFamily: z.string().min(1),
+
+    fontSize: z
       .number()
-      .positive("Width must be greater than zero"),
+      .positive(),
 
-    height: z
-      .number()
-      .positive("Height must be greater than zero"),
+    color: z.string().min(1),
   }),
+});
 
-  rotation: z.number().default(0),
+const imageBlockSchema = z.object({
+  type: z.literal("IMAGE"),
 
-  opacity: z
-    .number()
-    .min(0)
-    .max(100)
-    .default(100),
+  properties: z.object({
+    src: z.string().min(1),
 
-  startTime: z
-    .number()
-    .min(0)
-    .default(0),
+    fit: z.enum([
+      "cover",
+      "contain",
+    ]),
+  }),
+});
 
-  endTime: z
-    .number()
-    .min(0)
-    .nullable()
-    .default(null),
+const videoBlockSchema = z.object({
+  type: z.literal("VIDEO"),
 
-  zIndex: z
-    .number()
-    .int()
-    .default(0),
+  properties: z.object({
+    src: z.string().min(1),
 
-  visible: z.boolean().default(true),
+    volume: z
+      .number()
+      .min(0)
+      .max(1),
 
-  locked: z.boolean().default(false),
+    loop: z.boolean(),
+  }),
+});
 
-  editable: z.boolean().default(true),
-}).refine(
-  (data) =>
-    data.endTime === null ||
-    data.endTime >= data.startTime,
-  {
-    message: "endTime cannot be before startTime",
-    path: ["endTime"],
-  },
+const blockSchema = z.discriminatedUnion(
+  "type",
+  [
+    textBlockSchema,
+    imageBlockSchema,
+    videoBlockSchema,
+  ],
 );
+
+export const createComponentSchema = z
+  .object({
+    name: z
+      .string()
+      .trim()
+      .min(1, "Component name is required")
+      .max(150),
+
+    position: z.object({
+      x: z.number(),
+      y: z.number(),
+    }),
+
+    size: z.object({
+      width: z
+        .number()
+        .positive(
+          "Width must be greater than zero",
+        ),
+
+      height: z
+        .number()
+        .positive(
+          "Height must be greater than zero",
+        ),
+    }),
+
+    rotation: z.number().default(0),
+
+    opacity: z
+      .number()
+      .min(0)
+      .max(100)
+      .default(100),
+
+    startTime: z
+      .number()
+      .min(0)
+      .default(0),
+
+    endTime: z
+      .number()
+      .min(0)
+      .nullable()
+      .default(null),
+
+    zIndex: z
+      .number()
+      .int()
+      .default(0),
+
+    visible: z.boolean().default(true),
+
+    locked: z.boolean().default(false),
+
+    editable: z.boolean().default(true),
+
+    block: blockSchema,
+  })
+  .refine(
+    (data) =>
+      data.endTime === null ||
+      data.endTime >= data.startTime,
+    {
+      path: ["endTime"],
+      message:
+        "endTime cannot be before startTime",
+    },
+  );
