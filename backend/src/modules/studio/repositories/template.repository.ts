@@ -1,7 +1,7 @@
 import { database } from "../../../database/connection.js";
 
 export interface TemplateRow {
-  id: string;
+  id: number;
 
   name: string;
   description: string | null;
@@ -54,7 +54,7 @@ export async function createTemplate(
 }
 
 export async function findTemplateById(
-  id: string,
+  id: number,
 ): Promise<TemplateRow | null> {
   const template = await database<TemplateRow>("templates")
     .where({ id })
@@ -84,7 +84,7 @@ export interface UpdateTemplateRepositoryInput {
 }
 
 export async function updateTemplate(
-  id: string,
+  id: number,
   input: UpdateTemplateRepositoryInput,
 ): Promise<TemplateRow | null> {
   const values: Partial<TemplateRow> = {};
@@ -127,7 +127,7 @@ export async function updateTemplate(
 }
 
 export async function deleteTemplate(
-  id: string,
+  id: number,
 ): Promise<boolean> {
   const deletedRows = await database<TemplateRow>(
     "templates",

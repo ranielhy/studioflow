@@ -3,7 +3,7 @@ import type { Knex } from "knex";
 
 export async function up(knex: Knex): Promise<void> {
   await knex.schema.createTable("templates", (table) => {
-    table.uuid("id").primary();
+    table.increments("id").primary();
 
     table.string("name", 150).notNullable();
 
@@ -21,10 +21,10 @@ export async function up(knex: Knex): Promise<void> {
   });
   
   await knex.schema.createTable("slices", (table) => {
-  table.uuid("id").primary();
+  table.increments("id").primary();
 
   table
-    .uuid("template_id")
+    .integer("template_id")
     .notNullable()
     .references("id")
     .inTable("templates")
@@ -42,10 +42,10 @@ export async function up(knex: Knex): Promise<void> {
 });
 
 await knex.schema.createTable("components", (table) => {
-  table.uuid("id").primary();
+  table.increments("id").primary();
 
   table
-    .uuid("slice_id")
+    .integer("slice_id")
     .notNullable()
     .references("id")
     .inTable("slices")
@@ -81,10 +81,10 @@ await knex.schema.createTable("components", (table) => {
 });
 
 await knex.schema.createTable("blocks", (table) => {
-  table.uuid("id").primary();
+  table.increments("id").primary();
 
   table
-    .uuid("component_id")
+    .integer("component_id")
     .notNullable()
     .unique()
     .references("id")
