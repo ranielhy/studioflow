@@ -6,6 +6,7 @@ import type {
 } from "express";
 
 import { ZodError } from "zod";
+import { AppError } from "../errors/app-error.js";
 
 export const errorHandler: ErrorRequestHandler = (
   error: unknown,
@@ -27,7 +28,13 @@ export const errorHandler: ErrorRequestHandler = (
   }
 
   console.error(error);
-
+  if (error instanceof AppError) {
+    return response.status(error.statusCode).json({
+      error: error.code,
+      message: error.message,
+    });
+  }
+  
   return response.status(500).json({
     error: "internal_server_error",
     message:
