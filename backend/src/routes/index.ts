@@ -1,9 +1,9 @@
 import { Router } from "express";
-import { templateRoutes } from "../routes/template.routes";
 
+import { studioRoutes } from "../modules/studio/routes/index.js";
 import { healthRoutes } from "./health.routes.js";
 
 export const routes = Router();
 
 routes.use("/health", healthRoutes);
-routes.use("/templates", templateRoutes);
+routes.use(studioRoutes);
