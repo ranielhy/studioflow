@@ -77,3 +77,43 @@ export async function listSlicesByTemplate(
     })
     .orderBy("position", "asc");
 }
+
+export interface UpdateSliceRepositoryInput {
+  name?: string;
+  position?: number;
+  duration?: number;
+
+  background?: Record<string, unknown>;
+}
+
+export async function updateSlice(
+  id: number,
+  input: UpdateSliceRepositoryInput,
+): Promise<SliceRow | null> {
+  const values: Partial<SliceRow> = {};
+
+  if (input.name !== undefined) values.name = input.name;
+  if (input.position !== undefined) values.position = input.position;
+  if (input.duration !== undefined) values.duration = input.duration;
+  if (input.background !== undefined) values.background = input.background;
+
+  const [slice] = await database<SliceRow>("slices")
+    .where({ id })
+    .update({
+      ...values,
+      updated_at: database.fn.now(),
+    })
+    .returning("*");
+
+  return slice ?? null;
+}
+
+export async function deleteSlice(
+  id: number,
+): Promise<boolean> {
+  const deletedRows = await database<SliceRow>("slices")
+    .where({ id })
+    .delete();
+
+  return deletedRows > 0;
+}
