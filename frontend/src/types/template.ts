@@ -23,3 +23,14 @@ export interface Template {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface CreateTemplateInput {
+  name: string;
+  description?: string;
+
+  mediaType: MediaType;
+  status: TemplateStatus;
+
+  width: number;
+  height: number;
+}

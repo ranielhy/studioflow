@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Alert,
   Box,
@@ -17,12 +18,17 @@ import AddIcon from "@mui/icons-material/Add";
 
 import { useTemplates } from "../../hooks/templates/useTemplates";
 
+import { CreateTemplateDialog } from "../../components/templates/CreateTemplateDialog";
+
 export function StudioPage() {
   const {
     data: templates,
     isLoading,
     isError,
   } = useTemplates();
+const [createOpen, setCreateOpen] =
+  useState(false);
+
 
   return (
     <Box
@@ -81,6 +87,9 @@ export function StudioPage() {
               <Button
                 variant="contained"
                 startIcon={<AddIcon />}
+                onClick={() =>
+                  setCreateOpen(true)
+                }
               >
                 Novo Template
               </Button>
@@ -191,6 +200,13 @@ export function StudioPage() {
                 ))}
               </Grid>
             )}
+            <CreateTemplateDialog
+              open={createOpen}
+
+              onClose={() =>
+                setCreateOpen(false)
+              }
+            />
         </Stack>
       </Container>
     </Box>
