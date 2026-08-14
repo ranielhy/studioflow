@@ -183,7 +183,13 @@ export function TemplateEditorPage() {
               key={slice.id}
               variant="outlined"
             >
-              <CardActionArea>
+              <CardActionArea
+                onClick={() =>
+                  navigate(
+                    `/studio/templates/${templateId}/slices/${slice.id}`,
+                  )
+                }
+              >
                 <CardContent>
                   <Stack
                     direction="row"

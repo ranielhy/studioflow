@@ -62,3 +62,24 @@ export interface Component {
 
   block: Block;
 }
+
+export interface UpdateComponentInput {
+  id: number;
+
+  position?: Partial<Component["position"]>;
+  size?: Partial<Component["size"]>;
+
+  name?: string;
+  rotation?: number;
+  opacity?: number;
+  startTime?: number;
+  endTime?: number | null;
+  zIndex?: number;
+  visible?: boolean;
+  locked?: boolean;
+  editable?: boolean;
+
+  block?: {
+    properties: Record<string, unknown>;
+  };
+}
