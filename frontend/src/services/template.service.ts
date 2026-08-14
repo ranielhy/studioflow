@@ -13,6 +13,10 @@ interface CreateTemplateResponse {
   data: Template;
 }
 
+interface GetTemplateResponse {
+  data: Template;
+}
+
 export async function listTemplates(): Promise<
   Template[]
 > {
@@ -31,6 +35,17 @@ export async function createTemplate(
     await api.post<CreateTemplateResponse>(
       "/templates",
       input,
+    );
+
+  return response.data.data;
+}
+
+export async function getTemplateById(
+  id: number,
+): Promise<Template> {
+  const response =
+    await api.get<GetTemplateResponse>(
+      `/templates/${id}`,
     );
 
   return response.data.data;

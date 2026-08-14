@@ -4,6 +4,7 @@ import {
   Box,
   Button,
   Card,
+  CardActionArea,
   CardContent,
   Chip,
   Container,
@@ -13,6 +14,7 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 import AddIcon from "@mui/icons-material/Add";
 
@@ -21,6 +23,8 @@ import { useTemplates } from "../../hooks/templates/useTemplates";
 import { CreateTemplateDialog } from "../../components/templates/CreateTemplateDialog";
 
 export function StudioPage() {
+  const navigate = useNavigate();
+
   const {
     data: templates,
     isLoading,
@@ -76,7 +80,7 @@ const [createOpen, setCreateOpen] =
                     fontWeight: 700,
                   }}
                 >
-                  Studio
+                  Templates
                 </Typography>
 
                 <Typography color="text.secondary">
@@ -146,55 +150,66 @@ const [createOpen, setCreateOpen] =
                         height: "100%",
                       }}
                     >
-                      <CardContent>
-                        <Stack spacing={1.5}>
-                          <Stack
-                            direction="row"
-                            spacing={1}
-                            sx={{
-                              alignItems: "flex-start",
-                              justifyContent: "space-between",
-                            }}
-                          >
-                            <Typography variant="h6">
-                              {template.name}
+                      <CardActionArea
+                        onClick={() =>
+                          navigate(
+                            `/studio/templates/${template.id}`,
+                          )
+                        }
+                        sx={{
+                          height: "100%",
+                        }}
+                      >
+                        <CardContent>
+                          <Stack spacing={1.5}>
+                            <Stack
+                              direction="row"
+                              spacing={1}
+                              sx={{
+                                alignItems: "flex-start",
+                                justifyContent: "space-between",
+                              }}
+                            >
+                              <Typography variant="h6">
+                                {template.name}
+                              </Typography>
+
+                              <Chip
+                                size="small"
+                                label={template.status}
+                              />
+                            </Stack>
+
+                            <Typography
+                              variant="body2"
+                              color="text.secondary"
+                            >
+                              {template.description ||
+                                "Sem descrição"}
                             </Typography>
 
-                            <Chip
-                              size="small"
-                              label={template.status}
-                            />
+                            <Stack
+                              direction="row"
+                              spacing={1}
+                              sx={{
+                                flexWrap: "wrap",
+                              }}
+                            >
+                              <Chip
+                                size="small"
+                                variant="outlined"
+                                label={`${template.width} x ${template.height}`}
+                              />
+
+                              <Chip
+                                size="small"
+                                variant="outlined"
+                                label={template.mediaType}
+                              />
+                            </Stack>
                           </Stack>
-
-                          <Typography
-                            variant="body2"
-                            color="text.secondary"
-                          >
-                            {template.description ||
-                              "Sem descrição"}
-                          </Typography>
-
-                          <Stack
-                            direction="row"
-                            spacing={1}
-                            sx={{
-                              flexWrap: "wrap",
-                            }}
-                          >
-                            <Chip
-                              size="small"
-                              variant="outlined"
-                              label={`${template.width} x ${template.height}`}
-                            />
-
-                            <Chip
-                              size="small"
-                              variant="outlined"
-                              label={template.mediaType}
-                            />
-                          </Stack>
-                        </Stack>
-                      </CardContent>
+                        </CardContent>
+                      </CardActionArea>
                     </Card>
                   </Grid>
                 ))}
